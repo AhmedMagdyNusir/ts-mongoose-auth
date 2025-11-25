@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
-import { isDevelopmentMode } from "@/utils/helpers";
+import config from "@/config";
 import ApiError from "@/utils/classes/ApiError";
 
 export default function globalErrorHandler(err: ApiError, req: Request, res: Response, next: NextFunction): void {
@@ -7,6 +7,6 @@ export default function globalErrorHandler(err: ApiError, req: Request, res: Res
     status: err.status || "error",
     statusCode: err.statusCode || 500,
     message: err.message,
-    ...(isDevelopmentMode ? { stack: err.stack } : {}),
+    ...(config.isDevelopmentMode ? { stack: err.stack } : {}),
   });
 }

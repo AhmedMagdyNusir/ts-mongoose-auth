@@ -1,5 +1,6 @@
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { NextFunction } from "express";
+import config from "@/config";
 import ApiError from "../classes/ApiError";
 
 /**
@@ -22,7 +23,7 @@ export default function verifyToken(
   } = {},
 ): string | JwtPayload | void {
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET_KEY as string);
+    const decoded = jwt.verify(token, config.require("JWT_SECRET_KEY"));
     return decoded;
   } catch (error: any) {
     if (error.name === "TokenExpiredError") {

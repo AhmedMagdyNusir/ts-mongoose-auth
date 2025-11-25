@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import config from "@/config";
 import ApiError from "@/utils/classes/ApiError";
 import asyncErrorHandler from "@/utils/helpers/async-error-handler";
 import verifyToken from "@/utils/helpers/verify-token";
@@ -8,10 +9,9 @@ import UserModel from "@/models/users";
 import { trim } from "@/middlewares/sanitization";
 import { REFRESH_TOKEN_ERROR } from "@/utils/constants";
 
-const { JWT_SECRET_KEY, JWT_AT_EXPIRATION_TIME, JWT_RT_EXPIRATION_TIME } = process.env;
-
-if (!JWT_SECRET_KEY || !JWT_AT_EXPIRATION_TIME || !JWT_RT_EXPIRATION_TIME)
-  throw new Error("Please define all the JWT environment variables inside .env");
+const JWT_SECRET_KEY = config.require("JWT_SECRET_KEY");
+const JWT_AT_EXPIRATION_TIME = config.require("JWT_AT_EXPIRATION_TIME");
+const JWT_RT_EXPIRATION_TIME = config.require("JWT_RT_EXPIRATION_TIME");
 
 const generateAccessToken = (_id: string) =>
   jwt.sign({ _id }, JWT_SECRET_KEY, { expiresIn: `${Number(JWT_AT_EXPIRATION_TIME)}s` });
