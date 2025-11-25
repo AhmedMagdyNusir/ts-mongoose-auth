@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "build": "tsc --build && tsc-alias",
+    "build": "rimraf dist && tsc && tsc-alias",
     "start": "cross-env ENVIRONMENT=production node dist/index.js",
     "dev": "cross-env ENVIRONMENT=development nodemon -r tsconfig-paths/register src/index.ts",
     "clean": "rimraf dist"
